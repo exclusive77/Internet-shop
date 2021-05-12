@@ -1,0 +1,39 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MyShop.Models.Product>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@using MyShop.Models;
+@*
+        @model MyShop.Models.ViewModelPage
+        @model IEnumerable<MyShop.Models.Product>
+    @using MyShop.Helpers*@
+
+
+<h3>КАТОЛОГ ТОВАРОВ</h3>
+
+
+
+
+<div  style="display: flex; flex-wrap: wrap; padding:7px;margin:15px;">
+
+    @foreach (Product products in Model)
+    {
+
+        { Html.RenderPartial("_CardsProduct", products); }
+
+    }
+</div>
+    Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+    @*  @Html.PagedListPager(Model, page => Url.Action("Сatalog", new { page }))*@
+    @Html.PagedListPager(Model, page => Url.Action("СatalogFilter",
+                           new { ViewBag.SearchName, page }),
+                           PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+                           {
+                               HttpMethod = "POST",
+                               UpdateTargetId = "results",
+                               OnSuccess = "onAjaxSuccess",
+                               OnFailure = "onAjaxFailure"
+                           }))
+    @Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

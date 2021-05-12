@@ -1,0 +1,132 @@
+﻿@model IEnumerable<MyShop.Models.ViewModels.OrderAdminDeliveryVM>
+
+
+@{
+    string searchNameOrder = ViewBag.SearchNameOrde;
+    ViewBag.Title = "OrdersAdmin";
+}
+
+<h2>Список заказов</h2>
+<form class="form-inline my-2 my-lg-0"
+      method="post">
+
+    @Html.EditorFor(x => searchNameOrder, new { htmlAttributes = new { @class = "form-control " } })
+
+
+    <input type="submit" value="Поиск" />
+
+
+    <a href="/Admin/OrderAdminDelivery" class="btn btn-info ">Показать все</a>
+
+
+</form>
+@if (!Model.Any())
+{
+    <h2 class="text-center">
+        Нет заказов
+    </h2>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                Ордер Детали
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateAtOrder)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryInvoiceNumber)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+
+                <td>
+                    @Html.ActionLink(item.UserName, "UserDetails", "Admin", new { name = item.UserName }, null)
+
+
+                </td>
+                <td>
+                    @foreach (var prod in item.ProductQTY)
+                    {
+                        @prod.Key @:x @prod.Value шт;<br />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateAtOrder)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryInvoiceNumber)
+                </td>
+                <td>
+                    <a href="/Admin/DeliverysInfoAdmin/@item.OrderId" class="placeorder btn m-1 btn-primary float-right">Доставка</a>
+
+                    <a href="/Admin/PlaceOrderAddNoteUser/@item.OrderId" class="placeorder m-1 btn btn-primary float-right">Примечание</a>
+
+                    @if (User.IsInRole("admin"))
+                    {
+                <a href="/Admin/DeleteOrder/@item.OrderId" class="delete placeorder m-1 btn btn-primary float-right">Удалить</a>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+@section Scripts {
+    
+    <script>
+                $(function () {
+
+                   
+
+
+
+                    $("a.delete").on("click", function (e) {
+                        if (!confirm("Хотите удалить Заказ?")) return false;
+                    });
+                });
+    </script>
+}

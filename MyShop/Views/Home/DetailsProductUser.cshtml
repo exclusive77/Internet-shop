@@ -1,0 +1,166 @@
+﻿@model MyShop.Models.ViewModels.ProductVM
+
+<div>
+    <h2>Все о товаре</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="row">
+                @if (Model.PathImage != null)
+        {
+            <img src="/Files/Products/@Model.Id/@Model.PathImage" height="300" width="200" />
+
+            
+}
+else
+{
+
+        <img src="/Content/img/no_image.png" height="300" width="200" />
+}
+
+            </div>
+            <div class="row">
+                @if (Model.GaleryImages.Count() > 0)
+        {
+
+            <h4>Галерея</h4>
+
+            <div class="col-sm-12 fancyboxdiv"></div>
+            <br />
+          
+            <div >
+                @foreach (var item in Model.GaleryImages)
+        {
+
+            <a class="fancybox" rel="galery1" href="/Files/Products/@Model.Id/Gallery/@item">
+                <img src="/Files/Products/@Model.Id/Gallery/@item" height="100" width="50" />
+            </a>
+
+}
+            </div>
+
+
+}
+            </div>
+        </div>
+                <div class="col-md-6 col-sm-12">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            Код товара
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Id)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name,new { @class = "nameProduct" })
+                        </dd>
+
+
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+
+                        <dd>
+                            @Html.Raw(Model.Description)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Price)грн.
+                        </dd>
+
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CategoryId)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Category.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </dt>
+
+                        <dd>
+
+                            @if (@Model.Quantity == 0)
+                    {
+                        <p style="color:red">НЕТ В НАЛИЧИИ</p>
+            }
+            else
+            {
+                <p style="color:forestgreen">ECТЬ В НАЛИЧИИ</p>
+            @*    @Html.DisplayFor(model => model.Quantity);*@
+    }
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+
+
+        </div>
+<hr />
+
+
+@if (Request.IsAuthenticated)
+{<a href="#" class="addtocart btn btn-primary m-2">Купить</a>
+    <div class="ajaxmsg">
+        Продукт добавлен в корзину
+    </div>
+}
+else
+{
+    <div class="alert-primary m-2">Для осуществления покупок необходима регистрация! Так же можете связатся с нашими менеджерами (067)450-34-32</div>
+}
+
+
+
+@Html.ActionLink("Каталог товаров", "Сatalog", "Home")
+@section Scripts {
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+/********************Add to cart*********************/
+$(function () {
+    $("a.addtocart").click(function (e) {
+        e.preventDefault();
+
+    /*    $("span.loader").addClass("ib");*/
+
+        var url = "/Basket/AddToBasketPartial";
+
+        $.get(url, { id: @Model.Id
+    }, function myfunction(data) {
+        $(".ajaxcart").html(data);
+        }).done(function () {
+          /*  $("span.loader").removeClass("ib");*/
+            $("div.ajaxmsg").addClass("ib");
+
+            setTimeout(function () {
+                $("div.ajaxmsg").fadeOut("fast");
+          $("div.ajaxmsg").removeClass("ib");
+            }, 2000);
+        });
+    });
+});
+/****************************************************/
+    </script>
+
+    <script>
+
+        $(".fancybox").fancybox();
+    </script>
+}

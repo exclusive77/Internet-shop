@@ -1,0 +1,130 @@
+﻿@model IEnumerable<MyShop.Models.ViewModels.BasketVM>
+
+@{
+    int count = 1;
+    ViewBag.Title = "BasketList";
+}
+
+<h3>Корзина</h3>
+
+@if (@Model == null)
+{
+    <h3>@ViewBag.MessegeBasket</h3>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Фото
+                </th>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Кол-во,шт
+                </th>
+                <th>
+                    Цена,грн
+                </th>
+                <th>
+                    Сумма,грн
+                </th>
+
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.Image != null)
+                       {  <a href="/Home/DetailsProductUser/@item.ProductId">
+                       <img src="/Files/Products/@item.ProductId/@item.Image" height="100" width="50" /></a>
+                        }
+                        else
+                        {
+
+                        <img src="~/Content/img/no_image.png" height="100" width="50" />
+                        }
+                    </td>
+                    <td>
+                        <a  href="/Home/DetailsProductUser/@item.ProductId">  @Html.DisplayFor(modelItem => item.ProductName)</a>
+                    </td>
+                    <td class="qty@(item.ProductId)">
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td class="">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="total@(item.ProductId)">
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                    <td>
+                        <a href="/Basket/IncrementProduct/@item.ProductId" class="btn btn-info">+</a>
+                        <a href="/Basket/DecrementProduct/@item.ProductId" class="decproduct btn btn-dark" data-id="@item.ProductId">-</a>
+                        <a href="/Basket/DelProduct/@item.ProductId" class="RemoveProduct btn btn-danger" data-id="@item.ProductId">Del</a>
+                    </td>
+
+                </tr>}
+        </tbody>
+        <tfoot style="background:#ff6a00">
+            <tr>
+                <td colspan="4" class="text-left">
+                    Итого:
+                </td>
+                <td class="grandtotal">
+                    @ViewBag.SumTotal грн
+                </td>
+            </tr>
+        </tfoot>
+
+
+    </table>
+    <br />
+    <!-- <div class="paypaldiv">
+       <form class="paypalform" action="https://www.sandbox.paypal.com/us/cgi-bin/webscr" method="post">
+           <input type="hidden" name="cmd" value="_cart">
+           <input type="hidden" name="upload" value="1" />
+         value = Зарегитрированый бизнес аккаунт в paypal
+           <input type="hidden" name="business" value="account@paypal.com">
+
+        @foreach (var item in Model)
+           {
+               <input type="hidden" name="item_name_@count" value="@item.ProductName">
+               <input type="hidden" name="amount_@count" value="@item.Price">
+               <input type="hidden" name="quantity_@count" value="@item.Quantity">
+               count++;
+           }
+
+           <input type="hidden" name="currency_code" value="EUR">
+         <input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+       </form>
+       </div>-->
+
+
+
+
+
+
+    
+
+
+    <div>
+
+        <br/>
+
+        <a href="/Basket/PlaceOrder" class="placeorder btn btn-primary float-right">Оформить заказ</a>
+    </div>
+}
+@section Scripts {
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MyShop.Models.News>
+
+@{
+    ViewBag.Title = "ListNews";
+}
+
+<h2>Список новостей</h2>
+
+<p>
+    @Html.ActionLink("Новое Сообщение", "CreateNews","Admin")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NameMessage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameMessage)
+        </td>
+        <td>
+            @Html.Raw(item.Message)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditNews", new { id=item.Id }) |
+          
+            @Html.ActionLink("Delete", "DeleteNews", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

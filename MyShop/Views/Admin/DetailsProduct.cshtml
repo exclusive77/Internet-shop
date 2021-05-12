@@ -1,0 +1,85 @@
+﻿@model MyShop.Models.Product
+
+@{
+    ViewBag.Title = "DetailsProduct";
+}
+
+<h2>DetailsProduct</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <div>
+        @if (Model.PathImage != null)
+    {
+        <img src="/Files/Products/@Model.Id/@Model.PathImage" height="100" width="50" />
+
+     
+     
+      @*  <img src="~/Files/@Model.PathImage" height="200" width="150" />*@
+        }
+        else
+        {
+
+        <img src="/Content/img/no_image.png" height="200" width="150" />
+        }
+
+    </div>
+
+    <dl class="dl-horizontal">
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PathImage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PathImage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditProduct", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "ListProducts","Admin")
+</p>

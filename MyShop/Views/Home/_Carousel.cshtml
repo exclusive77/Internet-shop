@@ -1,0 +1,13 @@
+﻿@model IEnumerable<MyShop.Models.Carousel>
+
+
+
+
+@foreach (var item in Model)
+{
+<div class="carousel-item">
+    <img src="/Files/Carousels/@item.Id/@item.PathImage"  class="d-block w-80" height="350" width="400" />
+    
+</div>
+   
+}

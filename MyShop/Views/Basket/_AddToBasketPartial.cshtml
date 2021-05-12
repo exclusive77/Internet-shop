@@ -1,0 +1,10 @@
+﻿@model MyShop.Models.ViewModels.BasketVM
+
+<div>
+    <a href="/Basket/BasketList">
+        <img src="~/Content/img/shopping-cart2.png" height="50" width="50" />
+        <span class="badge badge-light">@Model.Quantity</span>
+        <span class="sr-only">unread messages</span>
+    </a>
+    =@Model.Price грн
+</div>

@@ -1,0 +1,28 @@
+﻿@model MyShop.Models.Product
+
+<h3>Вы действительно хотите удалить данный товар?</h3>
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+       
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("Отмена", "ListProducts",new { htmlAttributes = new { @class = "btn btn-default" } } )
+        </div>
+    }
+</div>

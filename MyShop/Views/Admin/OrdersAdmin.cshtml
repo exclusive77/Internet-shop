@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MyShop.Models.ViewModels.OrdersAdminVM>
+
+@{
+    string searchNameOrder = ViewBag.SearchNameOrde;
+    ViewBag.Title = "OrdersAdmin";
+}
+
+<h2>Список заказов</h2>
+<form class="form-inline my-2 my-lg-0"
+      method="post">
+ 
+            @Html.EditorFor(x => searchNameOrder, new { htmlAttributes = new { @class = "form-control " } })
+       
+  
+            <input type="submit" value="Поиск" />
+      
+      
+            <a href="/Admin/OrdersAdmin" class="btn btn-info ">Показать все</a>
+       
+   
+</form>
+@if (!Model.Any())
+{
+    <h2 class="text-center">
+        Нет заказов 
+    </h2>
+}
+else { 
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+           Ордер Детали
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateAtOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderId)
+        </td>
+        <td>
+            @Html.ActionLink(item.UserName, "UserDetails", "Admin", new { name = item.UserName }, null)
+         
+        </td>
+        <td>
+            @foreach (var prod in item.ProductQTY)
+        {
+            @prod.Key @:x @prod.Value шт;<br />
+    }
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateAtOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+
+        </td>
+        <td>
+            <a href="/Basket/PlaceOrderAddNote/@item.OrderId" class="placeorder m-1 btn btn-primary float-right">Примечание</a>
+            <a href="/Basket/DeliverysInfo/@item.OrderId" class="placeorder btn m-1 btn-primary float-right">Информация о Доставке</a>
+        </td>
+    </tr>
+}
+
+</table>
+}

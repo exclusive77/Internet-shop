@@ -1,0 +1,64 @@
+﻿@model MyShop.Models.Product
+
+<div>
+
+    <div class="card border-dark mb-3" style="height: 28rem;width:12rem">
+        @if (Model.PathImage != null)
+    {<a href="/Home/DetailsProductUser/@Model.Id"><img src="/Files/Products/@Model.Id/@Model.PathImage" height="200" width="190" /></a>
+         
+        }
+        else
+        {
+
+            <img src="~/Content/img/no_image.png" height="200" width="190" />
+        }
+
+        <div class="card-body">
+            <h6 class="card-title">@Model.Name</h6>
+            <h5 class="card-title">@Model.Price ГРН.</h5>
+
+            @if (Model.Quantity == 0)
+            {
+                <p style="color:red">НЕТ В НАЛИЧИИ</p>
+            }
+            else
+            {<p style="color:forestgreen">ECТЬ В НАЛИЧИИ</p>}
+            <a href="/Home/DetailsProductUser/@Model.Id" class="btn btn-primary m-2">O Товаре</a>
+
+        </div>
+    </div>
+</div>
+<p>
+
+</p>
+@section Scripts {
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+/********************Add to cart*********************/
+$(function () {
+    $("a.addtocartItem").click(function (e) {
+        e.preventDefault();
+
+    /*    $("span.loader").addClass("ib");*/
+
+        var url = "/Basket/AddToBasketPartial";
+
+        $.get(url, { id: @Model.Id
+    }, function myfunction(data) {
+        $(".ajaxcart").html(data);
+        }).done(function () {
+          /*  $("span.loader").removeClass("ib");*/
+          //  $("div.ajaxmsg").addClass("ib");
+
+         /*   setTimeout(function () {
+                $("div.ajaxmsg").fadeOut("fast");
+              /*  $("div.ajaxmsg").removeClass("ib");
+            }, 2000);
+        });*/
+    });
+});
+/****************************************************/
+    </script>
+    }

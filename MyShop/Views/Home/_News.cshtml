@@ -1,0 +1,12 @@
+﻿@model IEnumerable<MyShop.Models.News>
+
+
+
+@foreach (var item in Model) {
+<div>
+    @Html.Raw(item.Message)
+    <hr style="color:blue; background-color:cornflowerblue">
+</div>  
+}
+
+

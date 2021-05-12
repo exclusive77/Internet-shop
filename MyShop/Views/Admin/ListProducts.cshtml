@@ -1,0 +1,146 @@
+﻿@*@model IEnumerable<MyShop.Models.Product>*@
+@using PagedList.Mvc;
+@model PagedList.IPagedList<MyShop.Models.Product>
+<link href='@Url.Content("~/Content/themes/base/jquery-ui.css")' rel="stylesheet" type="text/css" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@using MyShop.Models;
+
+@{
+    string searchName = ViewBag.SearchName;
+}
+<h3>"Список Товаров"</h3>
+@if (TempData["MessegeProduct"] != null)
+{
+    <div class="alert-danger">
+
+
+        @TempData["MessegeProduct"]
+    </div>
+}
+    <form class="form-inline my-2 my-lg-0"
+          method="post">
+
+        @Html.EditorFor(x => searchName, new { htmlAttributes = new { @class = "form-control" } })
+        <input type="submit" value="Поиск" />
+        <a href="/Admin/ListProducts/0" class="btn btn-info ">Показать все</a>
+    </form>
+<div class="row m-2">
+
+    <div class="col">
+        @Html.ActionLink("Добавить товар", "CreateProductVM")
+    </div>
+   
+    <div class="col">
+        <select id="SelectedCategory" name="SelectedCategory">
+            <option value="0">Все</option>
+            @foreach (var item in ViewBag.SelectlistCategory)
+            {
+                if (ViewBag.SelectedCat == item.Value)
+                {
+                    <option selected="selected" value="@item.Value">@item.Text</option>
+                }
+                else
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Код товара
+        </th>
+        <th>
+            Название товара
+        </th>
+        <th>
+            Фото товара
+        </th>
+
+        <th>
+            Цена
+        <th>
+            Количество
+        </th>
+        <th>
+            Категория
+        </th>
+        <th></th>
+    </tr>
+    <div>
+
+    </div>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @if (item.PathImage != null)
+                {
+                    
+                    <img src="/Files/Products/@item.Id/@item.PathImage" height="100" width="50" />
+                }
+                else
+                {
+
+                    <img src="/Content/img/no_image.png" height="100" width="50" />
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)грн
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditProduct", new { id = item.Id }) |
+                @Html.ActionLink("Details", "DetailsProduct", new { id = item.Id }) |
+
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "delete" })
+               
+            </td>
+        </tr>
+    }
+
+</table>
+        Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("ListProducts", new { page, catId = ViewBag.SelectedCat }))
+
+        @section Scripts {
+           
+            <script>
+                $(function () {
+
+                    /* Select product from specified category */
+
+                    $("#SelectedCategory").on("change", function () {
+                        var url = $(this).val();
+
+                        if (url) {
+                            window.location = "/Admin/ListProducts?catId=" + url;
+                        }
+                        return false;
+                    });
+
+
+
+
+                    $("a.delete").on("click", function (e) {
+                        if (!confirm("Хотите удалить Товар?")) return false;
+                    });
+                });
+            </script>
+        }
